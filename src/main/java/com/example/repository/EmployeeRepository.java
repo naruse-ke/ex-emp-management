@@ -26,7 +26,7 @@ public class EmployeeRepository {
         employee.setName(rs.getString("name"));
         employee.setImage(rs.getString("image"));
         employee.setGender(rs.getString("gender"));
-        // employee.setHireDate(null);
+        employee.setHireDate(rs.getDate("hireDate"));
         employee.setMailAddress(rs.getString("mailAddress"));
         employee.setZipCode(rs.getString("zipCode"));
         employee.setAddress(rs.getString("address"));
@@ -128,13 +128,13 @@ public class EmployeeRepository {
                     , image = :image
                     , gender = :gender
                     , hire_date= :hireDate
-                    , mail_address = mailAddress
-                    , zip_code = zipCode
-                    , address = address
-                    , telephone = telephone
-                    , salary = salary
-                    , characteristics = characteristics
-                    , dependents_count = dependentsCount
+                    , mail_address = :mailAddress
+                    , zip_code = :zipCode
+                    , address = :address
+                    , telephone = :telephone
+                    , salary = :salary
+                    , characteristics = :characteristics
+                    , dependents_count = :dependentsCount
                 WHERE id = :id
                 """;
 
