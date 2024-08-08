@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -29,4 +30,17 @@ public class EmployeeController {
         return "employee/list.html";
     }
 
+    /**
+     * 従業員情報を出力する.
+     * 
+     * @param id 従業員ID
+     * @param model Model
+     * @param form UpdateEmployeeForm
+     * @return 従業員情報画面
+     */
+    @GetMapping("/showDetail")
+    public String showDetail(String id, Model model, UpdateEmployeeForm form) {
+        model.addAttribute("employee", employeeService.showDetail(Integer.parseInt(id)));
+        return "employee/detail.html";
+    }
 }
