@@ -17,6 +17,12 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    /**
+     * 従業員⼀覧を出⼒する.
+     * 
+     * @param model Model
+     * @return 従業員⼀覧画面
+     */
     @GetMapping("/showList")
     public String showList(Model model) {
         model.addAttribute("employeeList", employeeService.showList());

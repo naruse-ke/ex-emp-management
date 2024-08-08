@@ -29,7 +29,7 @@ public class AdministratorController {
 
     private static final String LOGIN_ERR_MSG_KEY = "loginErrMsg";
     private static final String LOGIN_ERR_MSG_VALUE = "メールアドレスまたはパスワードが不正です。";
-    private static final String ADMINISTRATOR_NAME = "administratorName";
+    private static final String SESSION_ADMINISTRATOR_NAME = "administratorName";
 
     /**
      * ログイン画面の表示.
@@ -64,7 +64,7 @@ public class AdministratorController {
             return "administrator/login";
         }
 
-        session.setAttribute(ADMINISTRATOR_NAME, administrator.getName());
+        session.setAttribute(SESSION_ADMINISTRATOR_NAME, administrator.getName());
         return "redirect:/employee/showList";
     }
 
