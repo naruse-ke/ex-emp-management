@@ -3,6 +3,8 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
@@ -49,11 +51,23 @@ public class EmployeeController {
     /**
      * 従業員詳細を更新する.
      * 
+     * <pre>
+     * 入力チェックエラーの場合は従業員情報画面を返却します。
+     * </pre>
+     * 
      * @param form UpdateEmployeeForm
+     * @param br BindingResult
+     * @param model Model
      * @return 従業員⼀覧画面へリダイレクト
      */
     @PostMapping("/update")
-    public String update(UpdateEmployeeForm form) {
+    public String update(@Validated UpdateEmployeeForm form, BindingResult br, Model model) {
+
+        // 入力チェック
+        if (br.hasErrors()) {
+            return showDetail(form.getId(), model, form);
+        }
+
         Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
         employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
         employeeService.update(employee);

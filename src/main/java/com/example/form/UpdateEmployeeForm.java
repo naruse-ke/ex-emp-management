@@ -1,5 +1,8 @@
 package com.example.form;
 
+import jakarta.validation.constraints.NotBlank;
+import com.example.util.annotation.Numeric;
+
 /**
  * 従業員情報更新時に使⽤するフォーム.
  */
@@ -9,6 +12,8 @@ public class UpdateEmployeeForm {
     private String id;
 
     /** 扶養⼈数. */
+    @NotBlank
+    @Numeric
     private String dependentsCount;
 
     public String getId() {
