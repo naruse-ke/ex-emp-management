@@ -17,6 +17,17 @@ public class AdministratorService {
     private AdministratorRepository administratorRepository;
 
     /**
+     * ログイン処理をする.
+     * 
+     * @param mailAddress メールアドレス
+     * @param password パスワード
+     * @return Administrator 従業員情報
+     */
+    public Administrator login(String mailAddress, String password) {
+        return administratorRepository.findByMailAddressAndPassword(mailAddress, password);
+    }
+
+    /**
      * 管理者情報を挿⼊する.
      * 
      * @param administrator 管理者情報

@@ -1,8 +1,11 @@
 package com.example.controller;
 
+import jakarta.servlet.http.HttpSession;
+import java.util.Objects;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
@@ -21,6 +24,13 @@ public class AdministratorController {
     @Autowired
     private AdministratorService administratorService;
 
+    @Autowired
+    private HttpSession session;
+
+    private static final String LOGIN_ERR_MSG_KEY = "loginErrMsg";
+    private static final String LOGIN_ERR_MSG_VALUE = "メールアドレスまたはパスワードが不正です。";
+    private static final String ADMINISTRATOR_NAME = "administratorName";
+
     /**
      * ログイン画面の表示.
      * 
@@ -30,6 +40,32 @@ public class AdministratorController {
     @GetMapping("/")
     public String toLogin(LoginForm form) {
         return "administrator/login";
+    }
+
+    /**
+     * ログイン処理.
+     * 
+     * <pre>
+     * DBからレコードを取得できる場合は、従業員情報⼀覧ページにリダイレクトします。
+     * DBからレコードを取得できない場合は、エラーメッセージを格納し、ログイン画面へフォワードします。
+     * </pre>
+     * 
+     * @param form LoginForm
+     * @param model Model
+     * @return 従業員情報⼀覧ページ 又は ログイン画面
+     */
+    @PostMapping("/login")
+    public String login(LoginForm form, Model model) {
+        Administrator administrator =
+                administratorService.login(form.getMailAddress(), form.getPassword());
+
+        if (Objects.isNull(administrator)) {
+            model.addAttribute(LOGIN_ERR_MSG_KEY, LOGIN_ERR_MSG_VALUE);
+            return "administrator/login";
+        }
+
+        session.setAttribute(ADMINISTRATOR_NAME, administrator.getName());
+        return "redirect:/employee/showList";
     }
 
     /**
