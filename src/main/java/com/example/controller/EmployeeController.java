@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +45,15 @@ public class EmployeeController {
      */
     @GetMapping("/showDetail")
     public String showDetail(String id, Model model, UpdateEmployeeForm form) {
-        model.addAttribute("employee", employeeService.showDetail(Integer.parseInt(id)));
+        Employee employee = employeeService.showDetail(Integer.parseInt(id));
+
+        BeanUtils.copyProperties(employee, form);
+        form.setId(employee.getId().toString());
+        form.setHireDate(employee.getHireDate().toString());
+        form.setSalary(employee.getSalary().toString());
+        form.setDependentsCount(employee.getDependentsCount().toString());
+
+        model.addAttribute("updateEmployeeForm", form);
         return "employee/detail.html";
     }
 
@@ -65,7 +74,7 @@ public class EmployeeController {
 
         // 入力チェック
         if (br.hasErrors()) {
-            return showDetail(form.getId(), model, form);
+            return "employee/detail.html";
         }
 
         Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
